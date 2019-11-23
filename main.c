@@ -8,7 +8,7 @@ Write your code in this editor and press "Run" button to compile and execute it.
 
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
 
 #define MAX_CAR 10
 #define MAX_STR 6
@@ -18,8 +18,10 @@ int main()
 	char park[MAX_CAR][MAX_STR];
 	char placa[MAX_STR];
 	int opcion;
+	void initialize(char **autos);
 	void ver_autos(char **autos);
 	void ingresar_auto(char *placa,char **autos);
+	initialize(park);
 	do{
     	
     	printf("1.- Observar parqueos ocupados\n");
@@ -52,42 +54,42 @@ int main()
     }while(opcion!=4);
 	
 }
-void ver_autos(char **autos){
+
+void initialize(char **autos){
 	printf("\nVerificando autos\n");
 	char **p_anterior = autos;
 	char **p;
 	for(int i=0;i<MAX_CAR;i++)
+	{   
+	    char *space; 
+	    space = (char*)malloc(MAX_STR * sizeof(char));
+        autos[i]=space;
+	}
+
+}
+
+
+void ver_autos(char **autos){
+	printf("\nVerificando autos\n");
+	for(int i=0;i<MAX_CAR;i++)
 	{
-		p = autos + i;
-
-		printf("El valor de p es: %c\n", *p);
-		printf("La dirección de p es: %p\n", p);
-		printf("El offset entre direcciones es: %ld\n",(long)p - (long)p_anterior);
-
-		p_anterior = p;
+	    printf("AUTO %d %s\n",i,autos[i]);
 	}
 
 }
 void ingresar_auto(char *placa,char **autos){
 	printf("\nIngresando auto\n");
-	char **p_anterior = autos;
-	char **p;
 	for(int i=0;i<MAX_CAR;i++)
 	{
-		p = autos + i;
-        
-        if(*p!=NULL){
-            printf("Ingresado en %p",p);
-            *p=placa;
-            printf("El valor de p es: %s\n", *p);
-    		printf("La dirección de p es: %p\n", p);
-    		printf("El offset entre direcciones es: %ld\n",(long)p - (long)p_anterior);
-
+        if(autos[i]!=NULL){
+            printf("Ingresado en %p",autos[i]);
+            autos[i]=placa;
+            printf("Placa es: %s\n", autos[i]);
+    		printf("La dirección de p es: %p\n", autos[i]);
+    		
             break;
-            
         }
 		
-		p_anterior = p;
 	}
 
 }
