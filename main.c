@@ -1,11 +1,3 @@
-/******************************************************************************
-
-                            Online C Compiler.
-                Code, Compile, Run and Debug C program online.
-Write your code in this editor and press "Run" button to compile and execute it.
-
-*******************************************************************************/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -39,6 +31,7 @@ int main()
 	        case 2:
 	            printf("Opcion 2");
 	            printf("Ingrese Placa: ");
+	            char placa[MAX_STR];
     	        scanf("%s",placa);
     	        ingresar_auto(placa,park);
 	            break;
@@ -47,8 +40,6 @@ int main()
 	            printf("Ingrese Placa: ");
     	        scanf("%s",placa);
 	            break;
-	            
-    	    
     	}
     	
     }while(opcion!=4);
@@ -61,9 +52,8 @@ void initialize(char **autos){
 	char **p;
 	for(int i=0;i<MAX_CAR;i++)
 	{   
-	    char *space; 
-	    space = (char*)malloc(MAX_STR * sizeof(char));
-        autos[i]=space;
+	    char *space="000000"; 
+	    autos[i]=space;
 	}
 
 }
@@ -81,12 +71,14 @@ void ingresar_auto(char *placa,char **autos){
 	printf("\nIngresando auto\n");
 	for(int i=0;i<MAX_CAR;i++)
 	{
-        if(autos[i]!=NULL){
-            printf("Ingresado en %p",autos[i]);
-            autos[i]=placa;
+        if(strcmp(autos[i],"000000")==0){
+            char *tmp;
+            tmp = (char*)malloc(MAX_STR * sizeof(char));
+            strcpy(tmp, placa);
+            autos[i]=tmp;
+            printf("Ingresado en %p\n",autos[i]);
             printf("Placa es: %s\n", autos[i]);
     		printf("La dirección de p es: %p\n", autos[i]);
-    		
             break;
         }
 		
