@@ -7,7 +7,7 @@
 
 int main()
 {
-	char park[MAX_CAR][MAX_STR];
+	char *park[MAX_CAR];
 	char placa[MAX_STR];
 	int opcion;
 	void initialize(char **autos);
@@ -31,7 +31,6 @@ int main()
 	        case 2:
 	            printf("Opcion 2");
 	            printf("Ingrese Placa: ");
-	            char placa[MAX_STR];
     	        scanf("%s",placa);
     	        ingresar_auto(placa,park);
 	            break;
@@ -41,15 +40,12 @@ int main()
     	        scanf("%s",placa);
 	            break;
     	}
-    	
     }while(opcion!=4);
 	
 }
 
 void initialize(char **autos){
 	printf("\nVerificando autos\n");
-	char **p_anterior = autos;
-	char **p;
 	for(int i=0;i<MAX_CAR;i++)
 	{   
 	    char *space="000000"; 
