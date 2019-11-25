@@ -5,89 +5,106 @@
 Write your code in this editor and press "Run" button to compile and execute it.
 
 *******************************************************************************/
-
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
 
 #define MAX_CAR 10
 #define MAX_STR 6
 
 int main()
 {
-	char park[MAX_CAR][MAX_STR];
+	char *park[MAX_CAR];
 	char placa[MAX_STR];
 	int opcion;
+	void initialize(char **autos);
 	void ver_autos(char **autos);
-	void ingresar_auto(char *placa,char **autos);
-	do{
-    	
-    	printf("1.- Observar parqueos ocupados\n");
-    	printf("2.- Ingresar auto a parqueo\n");
-    	printf("3.- Retirar auto de parqueo\n");
-    	printf("4.- Salir\n");
-    	
-    	printf("Ingrese Opcion: ");
-    	scanf("%d",&opcion);
-    	switch(opcion){
-    	    case 1:
-    	        printf("Opcion 1");
-    	        ver_autos(park);
-    	        break;
-	        case 2:
-	            printf("Opcion 2");
-	            printf("Ingrese Placa: ");
-    	        scanf("%s",placa);
-    	        ingresar_auto(placa,park);
-	            break;
-            case 3:
-	            printf("Opcion 3");
-	            printf("Ingrese Placa: ");
-    	        scanf("%s",placa);
-	            break;
-	            
-    	    
-    	}
-    	
-    }while(opcion!=4);
-	
+	void ingresar_auto(char *placa, char **autos);
+	void remover_auto(char *placa, char **autos);
+	initialize(park);
+	do {
+
+		printf("1.- Observar parqueos ocupados\n");
+		printf("2.- Ingresar auto a parqueo\n");
+		printf("3.- Retirar auto de parqueo\n");
+		printf("4.- Salir\n");
+
+		printf("Ingrese Opcion: ");
+		scanf("%d", &opcion);
+		switch (opcion) {
+		case 1:
+			printf("Opcion 1");
+			ver_autos(park);
+			break;
+		case 2:
+			printf("Opcion 2");
+			printf("Ingrese Placa: ");
+			scanf("%s", placa);
+			ingresar_auto(placa, park);
+			break;
+		case 3:
+			printf("Opcion 3");
+			printf("Ingrese Placa: ");
+			scanf("%s", placa);
+			remover_auto(placa, park);
+			break;
+		}
+
+	} while (opcion != 4);
+
 }
-void ver_autos(char **autos){
+
+void initialize(char **autos) {
 	printf("\nVerificando autos\n");
-	char **p_anterior = autos;
-	char **p;
-	for(int i=0;i<MAX_CAR;i++)
+	for (int i = 0; i < MAX_CAR; i++)
 	{
-		p = autos + i;
-
-		printf("El valor de p es: %c\n", *p);
-		printf("La dirección de p es: %p\n", p);
-		printf("El offset entre direcciones es: %ld\n",(long)p - (long)p_anterior);
-
-		p_anterior = p;
+		char *space = "000000";
+		autos[i] = space;
 	}
 
 }
-void ingresar_auto(char *placa,char **autos){
-	printf("\nIngresando auto\n");
-	char **p_anterior = autos;
-	char **p;
-	for(int i=0;i<MAX_CAR;i++)
-	{
-		p = autos + i;
-        
-        if(*p!=NULL){
-            printf("Ingresado en %p",p);
-            *p=placa;
-            printf("El valor de p es: %s\n", *p);
-    		printf("La dirección de p es: %p\n", p);
-    		printf("El offset entre direcciones es: %ld\n",(long)p - (long)p_anterior);
 
-            break;
-            
-        }
-		
-		p_anterior = p;
+
+void ver_autos(char **autos) {
+	printf("\nVerificando autos\n");
+	for (int i = 0; i < MAX_CAR; i++)
+	{
+		printf("AUTO %d %s\n", i, autos[i]);
 	}
 
+}
+void ingresar_auto(char *placa, char **autos) {
+	printf("\nIngresando auto\n");
+	for (int i = 0; i < MAX_CAR; i++)
+	{
+		if (strcmp(autos[i], "000000") == 0) {
+			char *tmp;
+			tmp = (char*)malloc(MAX_STR * sizeof(char));
+			strcpy(tmp, placa);
+			autos[i] = tmp;
+			printf("Ingresado en %p\n", autos[i]);
+			printf("Placa es: %s\n", autos[i]);
+			printf("La dirección de p es: %p\n", autos[i]);
+			break;
+		}
+
+	}
+
+}
+void remover_auto(char *placa, char **autos) {
+	printf("\nIngresando auto\n");
+	for (int i = 0; i < MAX_CAR; i++)
+	{
+		if (strcmp(autos[i], placa) == 0) {
+			char *tmp;
+			tmp = (char*)malloc(MAX_STR * sizeof(char));
+			strcpy(tmp, "000000");
+			autos[i] = tmp;
+			printf("Ingresado en %p\n", autos[i]);
+			printf("Placa es: %s\n", autos[i]);
+			printf("La dirección de p es: %p\n", autos[i]);
+			break;
+		}
+
+	}
 }
