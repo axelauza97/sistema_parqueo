@@ -5,7 +5,7 @@
     prompt2: .asciiz "1.- Observar parqueos ocupados\n"
     prompt3: .asciiz "2.- Ingresar auto a parqueo\n"
     prompt4: .asciiz "3.- Retirar auto de parqueo\n"
-    prompt5: .asciiz "4.- Salir"
+    prompt5: .asciiz "4.- Salir\n"
     prompt6: .asciiz "Placa"
 .text 
     la $s0, park # Cargo la dir del parqueo
@@ -36,7 +36,7 @@ observar_parqueos:
         li $s1,4
         la $a0,prompt6
         syscall
-        add $t2,$zero,4 #avanzo el contador
+        add $t2,$t2,4 #avanzo el contador
         add $a1,$zero,$t2
         j for
     ExitOP:
@@ -54,11 +54,11 @@ ingresar_auto:
         beq $t2, $a3, asignar_auto   # Aumentar el contador en 1 si no hay disponibilidad
             addi $t0, $t0, 1
             addi $v0, $zero, 1
-        asignar_auto:                    # Asingar auto en un espacio vacío 
+        asignar_auto:                    # Asingar auto en un espacio vacÃƒÂ­o 
             add $t2, $t2, $a0
             add $a1, $a1, $t2
             addi $v0, $zero, 0
-            # llamar a funciones para imprimir a partir de aquí
+            # llamar a funciones para imprimir a partir de aquÃƒÂ­
             j ExitIA
             ExitIA:
             jr $ra
@@ -68,14 +68,14 @@ remover_auto:
     slt $t1, $t0, $a2              
         beq $t1, $zero, EXIT         # Verificar si hay un espacio disponible en cada registro del parking
         mul $t2, $t0, $a1
-        beq $t2, $a0, remover_auto   # Comparar el valor de la placa tomado en la entrada y almacenado en a0 para verificar si está en el registro
+        beq $t2, $a0, remover_auto   # Comparar el valor de la placa tomado en la entrada y almacenado en a0 para verificar si estÃƒÂ¡ en el registro
         addi $t0, $t0, 1
     addi $v0, $zero, 1
         j remover_auto                    # Liberar espacio 
             addi $t2, $t2, 0
             add $a1, $a1, $t2
             addi $v0, $zero, 0
-            # llamar a funciones para imprimir a partir de aquí
+            # llamar a funciones para imprimir a partir de aquÃƒÂ­
             j ExitRA
         ExitRA:
             jr $ra
