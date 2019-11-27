@@ -17,6 +17,8 @@
         jal opcion
         add $t1,$zero,$v0 #Tomar salida de opcion
         
+        
+
         add $a1,$s0,$zero #envio parametro para observar parqueo(dir)
         add $a2,$s1,$zero #envio parametro para observar parqueo(size)
         beq $v0,1,observar_parqueos
@@ -100,4 +102,4 @@ opcion:
     syscall # store answer
     jr $ra
 EXIT:
-    
+     
