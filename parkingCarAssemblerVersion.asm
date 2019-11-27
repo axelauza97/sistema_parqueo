@@ -1,11 +1,12 @@
 .data  
     park: .word 0:20 # Arreglo de autos
-    park_size: .word 20
+    park_size: .word 19
     prompt1: .asciiz "Ingrese una opcion\n"
     prompt2: .asciiz "1.- Observar parqueos ocupados\n"
     prompt3: .asciiz "2.- Ingresar auto a parqueo\n"
     prompt4: .asciiz "3.- Retirar auto de parqueo\n"
     prompt5: .asciiz "4.- Salir"
+    prompt6: .asciiz "Placa"
 .text 
     la $s0, park # Cargo la dir del parqueo
     la $s1, park_size # Cargo la dir del size parqueo
@@ -15,12 +16,34 @@
     while1:
         jal opcion
         add $t1,$zero,$v0 #Tomar salida de opcion
-        beq $v0,1,paso1
+        
+        add $a1,$s0,$zero #envio parametro para observar parqueo(dir)
+        add $a2,$s1,$zero #envio parametro para observar parqueo(size)
+        beq $v0,1,observar_parqueos
+                
         beq $v0,2,ingresar_auto
         beq $v0,3,remover_auto
-        beq $v0,4,exit
+        beq $v0,4,EXIT
         j while1
             
+observar_parqueos:
+    add $t0,$zero,$zero #contador
+    add $t2,$zero,$zero #ofset
+    for:
+        slt $t0,$a2,$t1
+        bne $t1,1,ExitOP
+        lw $s1,0($a1) #PLACA en s1
+        li $s1,4
+        la $a0,prompt6
+        syscall
+        add $t2,$zero,4 #avanzo el contador
+        add $a1,$zero,$t2
+        j for
+    ExitOP:
+        sub $a1,$a1,$t2 #Posicionar en origen array
+        jr $ra
+
+    
 # Funcion ingresar autos
 ingresar_auto:
     add $t0, $zero, $zero       # inicializar el bucle for en 0
@@ -53,8 +76,8 @@ remover_auto:
             add $a1, $a1, $t2
             addi $v0, $zero, 0
             # llamar a funciones para imprimir a partir de aquí
-            j ExitIA
-        ExitIA:
+            j ExitRA
+        ExitRA:
             jr $ra
 
 opcion:
@@ -76,5 +99,5 @@ opcion:
     li $v0, 5
     syscall # store answer
     jr $ra
-exit:
+EXIT:
     
